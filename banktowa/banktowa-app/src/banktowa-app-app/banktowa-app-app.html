@@ -1,32 +1,40 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
+<!--  BANKTOWA TRASPASO-->
+<link rel="import" href="banktowa-traspaso/banktowa-traspaso-app.html">
+
+
+
 <dom-module id="banktowa-app-app">
-  <template>
+    <template>
     <style>
       :host {
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
+    
+    <banktowa-traspaso-app></banktowa-traspaso-app>
   </template>
 
-  <script>
-    /**
-     * @customElement
-     * @polymer
-     */
-    class BanktowaAppApp extends Polymer.Element {
-      static get is() { return 'banktowa-app-app'; }
-      static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'banktowa-app-app'
-          }
-        };
-      }
-    }
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class BanktowaAppApp extends Polymer.Element {
+            static get is() {
+                return 'banktowa-app-app';
+            }
+            static get properties() {
+                return {
+                    prop1: {
+                        type: String,
+                        value: 'banktowa-app-app'
+                    }
+                };
+            }
+        }
 
-    window.customElements.define(BanktowaAppApp.is, BanktowaAppApp);
-  </script>
+        window.customElements.define(BanktowaAppApp.is, BanktowaAppApp);
+    </script>
 </dom-module>
