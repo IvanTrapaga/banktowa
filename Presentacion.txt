@@ -1,0 +1,16 @@
+Hola este sera el repositorio los pasos que deberan seguir para crear su carpeta seran los siguientes:
+
+Crea una carpeta donde se tendran todas las actualizaciones
+Ingresa a gitbash y da un cd (espacio) direccion de la carpeta
+ejecuta los siguientes comandos
+
+
+echo "# banktowa" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/IvanTrapaga/banktowa.git
+git push -u origin master
+
+git remote add origin https://github.com/IvanTrapaga/banktowa.git
+git push -u origin master

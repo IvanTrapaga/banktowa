@@ -1,0 +1,6 @@
+{
+  "name": "banktowa-app",
+  "short_name": "banktowa-app",
+  "start_url": "/",
+  "display": "standalone"
+}

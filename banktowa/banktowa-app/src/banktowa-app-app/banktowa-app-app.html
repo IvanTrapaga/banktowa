@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="banktowa-app-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class BanktowaAppApp extends Polymer.Element {
+      static get is() { return 'banktowa-app-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'banktowa-app-app'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(BanktowaAppApp.is, BanktowaAppApp);
+  </script>
+</dom-module>
