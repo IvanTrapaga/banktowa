@@ -1,0 +1,189 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
+
+<dom-module id="banktowa-traspaso">
+    <template>
+    <style>
+      :host {
+        display: block;    
+
+        background-color: var(--bg-color-cmp,#FAFAFA);    
+      }
+
+      :host,table, div{    
+        width: 92%;
+        height: auto;
+        margin: 0% 4% 0% 4%;
+      }
+
+      table,div {
+          margin-top: 4%;
+          border-style: double;
+      }
+
+      .labels {
+        --label-traspaso: 20px;
+        font-size: var(--label-traspaso);
+        font-weight: bold;
+      }
+
+      select,input{
+          width: var(--width-select, 80%);
+          height: var(--height-select,50px);
+
+          font-size: var(--label-traspaso);
+      }
+
+      button {
+        width: var(--width-button, 30%);
+        height: var(--height-button, 50px);
+      }
+
+      table{
+          border-style: solid;
+      }
+    </style>
+    <div>
+    <table cellspacing="0px" >
+        <tbody>
+            <tr>
+                <td width="20%"><span class="labels">Cuenta Destino:</span></td>
+                <td width="50%">
+                        <select on-change="funSelectItemChangeOrigen" size="[[sizeItems]]">
+                                <template is="dom-repeat" items=[[cuentasOrigen]]>
+                                <option value="[[item]]">[[item]]</option>
+                                </template>
+    </select>
+    </td>
+    <td width="30%"></td>
+    </tr>
+    <tr>
+        <td><span class="labels">Cuenta Origen:</span></td>
+        <td>
+            <select>
+                <template is="dom-repeat" items=[[cuentasOrigen]]>
+                        <option value="[[item]]">[[item]]</option>
+                </template>
+                </select>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td><span class="labels">Importe:</span></td>
+        <td>
+            <!--
+            <input type="text" maxlength="14" on-blur="checkImporte" value$="{{importe}}">
+            -->
+            <input type="number" min="1" max="99999999.99" on-blur="checkImporte" value$="{{importe}}">
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td colspan="3" align="right"><button on-click="">Traspasar</button></td>
+    </tr>
+    </tbody>
+    </table>
+    </div>
+
+    <div>
+        <h1>Mensaje</h1>
+        <div>
+            <h3>¿Estas seguro de realizar el traspaso a <b>"[[cuentaSelect.alias]]"</b> por <b>$[[importe]]</b></h3>
+        </div>
+    </div>
+
+    <div>
+        <h1>Comprobante</h1>
+    </div>
+    </template>
+
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class BanktowaTraspaso extends Polymer.Element {
+            static get is() {
+                return 'banktowa-traspaso';
+            }
+            static get properties() {
+                return {
+                    module: {
+                        type: String,
+                        value: 'banktowa-traspaso'
+                    },
+
+                    cuentasOrigen: {
+                        type: Array,
+                        value: [1, 2, 3, 4],
+                        notify: true
+                    },
+
+                    cuentasDestino: {
+                        type: Array,
+                        value: [],
+                        notify: true,
+                    },
+                    sizeItems: {
+                        type: Number,
+                        value: 1
+                    },
+
+                    importe: {
+                        type: String,
+                        value: "1.00"
+                    },
+                    cuentaSelect: {
+                        type: Object,
+                        value: {
+                            id: 0,
+                            no_cuenta: "45238080149063",
+                            alias: "cuenta destino",
+                            id_cliente: "1"
+                        }
+                    },
+
+                    mensajes: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    comprobante: {
+                        type: Boolean,
+                        value: false
+                    }
+
+
+                };
+            }
+
+            //---------------------------------------------------------------------------------------------------------
+            funSelectItemChangeOrigen(ev) {
+
+                console.log(ev.target);
+            }
+
+            //---------------------------------------------------------------------------------------------------------
+            checkImporte(ev) {
+
+                let importe = ev.target.value;
+                let numImp = parseFloat(importe);
+
+                console.log(`Importe --> ${numImp}, [${ev.target.value}]`);
+
+                this.set('importe', numImp);
+            }
+
+            //---------------------------------------------------------------------------------------------------------
+
+
+            //---------------------------------------------------------------------------------------------------------
+
+
+            //---------------------------------------------------------------------------------------------------------
+
+        }
+        window.customElements.define(BanktowaTraspaso.is, BanktowaTraspaso);
+    </script>
+</dom-module>
