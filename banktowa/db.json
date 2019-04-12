@@ -1,0 +1,358 @@
+{
+    "clientes":[
+        {
+            "id": 0,
+            "id_cliente": 1111,
+            "nombre": "Marín",
+            "apellido_p": "Chacón",
+            "apellido_m": "Sánchez"
+        },
+        {
+            "id": 1,
+            "id_cliente": 1112,
+            "nombre": "Rafael",
+            "apellido_p": "Damaso",
+            "apellido_m": "Santos"
+        },
+        {
+            "id": 2,
+            "id_cliente": 1113,
+            "nombre": "Iván",
+            "apellido_p": "Trápaga",
+            "apellido_m": "Favila"
+        },
+        {
+            "id": 3,
+            "id_cliente": 1114,
+            "nombre": "Oscar Ulises",
+            "apellido_p": "Yañez",
+            "apellido_m": "Sánchez"
+        },
+        {
+            "id": 4,
+            "id_cliente": 1115,
+            "nombre": "Bryan Jahaziel",
+            "apellido_p": "Pelcastre",
+            "apellido_m": "García"
+        }
+    ],
+    "cuentasClientes":[
+        {
+            "id": 0,
+            "id_cliente": 1111,
+            "num_cuenta": 1028374482,
+            "tipo_cuenta": "Nómina",
+            "saldo": 100000
+        },
+        {
+            "id": 1,
+            "id_cliente": 1111,
+            "num_cuenta": 2038173193,
+            "tipo_cuenta": "Alcancia",
+            "saldo": 12837.77
+        },
+        {
+            "id": 2,
+            "id_cliente": 1112,
+            "num_cuenta": 1023298872,
+            "tipo_cuenta": "Nómina",
+            "saldo": 54400
+        },
+        {
+            "id": 3,
+            "id_cliente": 1112,
+            "num_cuenta": 2028382748,
+            "tipo_cuenta": "Alcancia",
+            "saldo": 1203.91
+        },
+        {
+            "id": 4,
+            "id_cliente": 1112,
+            "num_cuenta": 2038394839,
+            "tipo_cuenta": "Alcancia",
+            "saldo": 3287.34
+        },
+        {
+            "id": 5,
+            "id_cliente": 1113,
+            "num_cuenta": 3049583838,
+            "tipo_cuenta": "PrestaTowa",
+            "saldo": 50000
+        },
+        {
+            "id": 6,
+            "id_cliente": 1114,
+            "num_cuenta": 1027749299,
+            "tipo_cuenta": "Nómina",
+            "saldo": 32012.53
+        },
+        {
+            "id": 7,
+            "id_cliente": 1114,
+            "num_cuenta": 2038474223,
+            "tipo_cuenta": "Alcancia",
+            "saldo": 87392.20
+        },
+        {
+            "id": 8,
+            "id_cliente": 1115,
+            "num_cuenta": 2039932013,
+            "tipo_cuenta": "Alcancia",
+            "saldo": 24371.04
+        }
+    ],
+    "cuentasDestino":[
+        {
+            "id": 0,
+            "id_cliente": 1111,
+            "no_cuenta": 1020304050,
+            "alias": "Pedro"
+        },
+        {
+            "id": 1,
+            "id_cliente": 1112,
+            "no_cuenta": 4132986644,
+            "alias": "Toño"
+        },
+        {
+            "id": 2,
+            "id_cliente": 1113,
+            "no_cuenta": 2770604753,
+            "alias": "Carlos"
+        },
+        {
+            "id": 3,
+            "id_cliente": 1114,
+            "no_cuenta": 4325480310,
+            "alias": "Paco"
+        },
+        {
+            "id": 4,
+            "id_cliente": 1115,
+            "no_cuenta": 3775424066,
+            "alias": "Laura"
+        },
+        {
+            "id": 5,
+            "id_cliente": 1111,
+            "no_cuenta": 1221836128,
+            "alias": "Alicia"
+        },
+        {
+            "id": 6,
+            "id_cliente": 1112,
+            "no_cuenta": 2010208915,
+            "alias": "Nancy"
+        },
+        {
+            "id": 7,
+            "id_cliente": 1113,
+            "no_cuenta": 3510189340,
+            "alias": "Miguel"
+        },
+        {
+            "id": 8,
+            "id_cliente": 1114,
+            "no_cuenta": 2977798130,
+            "alias": "Paty"
+        },
+        {
+            "id": 9,
+            "id_cliente": 1115,
+            "no_cuenta": 2343305782,
+            "alias": "Oscar"
+        },
+        {
+            "id": 10,
+            "id_cliente": 1113,
+            "no_cuenta": 3306330732,
+            "alias": "Adriana"
+        },
+        {
+            "id": 11,
+            "id_cliente": 1111,
+            "no_cuenta": 3335545521,
+            "alias": "Nacho"
+        },
+        {
+            "id": 12,
+            "id_cliente": 1114,
+            "no_cuenta": 1616544665,
+            "alias": "Alina"
+        },
+        {
+            "id": 13,
+            "id_cliente": 1111,
+            "no_cuenta": 3224099050,
+            "alias": "Rebeca"
+        },
+        {
+            "id": 14,
+            "id_cliente": 1112,
+            "no_cuenta": 3095428040,
+            "alias": "Camilo"
+        },
+        {
+            "id": 15,
+            "id_cliente": 1113,
+            "no_cuenta": 1982610231,
+            "alias": "Nico"
+        },
+        {
+            "id": 16,
+            "id_cliente": 1114,
+            "no_cuenta": 1268260831,
+            "alias": "Ulises"
+        },
+        {
+            "id": 17,
+            "id_cliente": 1115,
+            "no_cuenta": 4292042824,
+            "alias": "Pedro"
+        }
+    ],
+    "movimientos":[
+        {
+            "id": 0,
+            "id_cliente": 1115,
+            "cuentaOrigen": 2039932013,
+            "cuentaDestino": 4292042824,
+            "fecha": "20190404",
+            "hora": "13:27",
+            "descripcion": "Traspaso a cuenta XX2824",
+            "monto": -3050.32
+        },
+        {
+            "id": 1,
+            "id_cliente": 1112,
+            "cuentaOrigen": 1028374482,
+            "cuentaDestino": 1020304050,
+            "fecha": "20190401",
+            "hora": "18:00",
+            "descripcion": "Traspaso a cuenta XX4050",
+            "monto": -2200.52
+        },
+        {
+            "id": 2,
+            "id_cliente": 1114,
+            "cuentaOrigen": 1027749299,
+            "cuentaDestino": 3095428040,
+            "fecha": "20190301",
+            "hora": "20:00",
+            "descripcion": "Traspaso a cuenta XX8040",
+            "monto": -1000.32
+        },
+        {
+            "id": 3,
+            "id_cliente": 1111,
+            "cuentaOrigen": 1028374482,
+            "cuentaDestino": 2343305782,
+            "fecha": "20190415",
+            "hora": "01:01",
+            "descripcion": "Traspaso a cuenta XX5782",
+            "monto": -3050.32
+        },
+        {
+            "id": 4,
+            "id_cliente": 1112,
+            "cuentaOrigen": 2038394839,
+            "cuentaDestino": 2977798130,
+            "fecha": "20190330",
+            "hora": "23:59",
+            "descripcion": "Traspaso a cuenta XX8130",
+            "monto": -152.75
+        },
+        {
+            "id": 5,
+            "id_cliente": 1113,
+            "cuentaOrigen": 3049583838,
+            "cuentaDestino": 2770604753,
+            "fecha": "20190410",
+            "hora": "21:67",
+            "descripcion": "Traspaso a cuenta XX4753",
+            "monto": -298.99
+        },
+        {
+            "id": 6,
+            "id_cliente": 1113,
+            "cuentaOrigen": 3049583838,
+            "cuentaDestino": 0,
+            "fecha": "20190310",
+            "hora": "01:30",
+            "descripcion": "Deposito nomina",
+            "monto": 7298.99
+        },
+        {
+            "id": 7,
+            "id_cliente": 1112,
+            "cuentaOrigen": 2028382748,
+            "cuentaDestino": 0,
+            "fecha": "20190322",
+            "hora": "12:00",
+            "descripcion": "Deposito en ventanilla",
+            "monto": 1592.00
+        },
+        {
+            "id": 8,
+            "id_cliente": 1112,
+            "cuentaOrigen": 3095428040,
+            "cuentaDestino": 0,
+            "fecha": "20190323",
+            "hora": "09:50",
+            "descripcion": "Deposito en ventanilla",
+            "monto": 843.87
+        },
+        {
+            "id": 9,
+            "id_cliente": 1115,
+            "cuentaOrigen": 2039932013,
+            "cuentaDestino": 0,
+            "fecha": "20190405",
+            "hora": "08:56",
+            "descripcion": "Deposito de pago",
+            "monto": 342.65
+        },
+        {
+            "id": 10,
+            "id_cliente": 1114,
+            "cuentaOrigen": 1027749299,
+            "cuentaDestino": 0,
+            "fecha": "20190401",
+            "hora": "23:59",
+            "descripcion": "Deposito nomina",
+            "monto": 6500.00
+        },
+        {
+            "id": 11,
+            "id_cliente": 1114,
+            "cuentaOrigen": 1027749299,
+            "cuentaDestino": 0,
+            "fecha": "20190421",
+            "hora": "22:01",
+            "descripcion": "UBER**PRV 123441",
+            "monto": -650.00
+        }
+        ,
+        {
+            "id": 12,
+            "id_cliente": 1112,
+            "cuentaOrigen": 2028382748,
+            "cuentaDestino": 0,
+            "fecha": "20190411",
+            "hora": "11:23",
+            "descripcion": "SINDELANTAL*6543",
+            "monto": -189.00
+        }
+        ,
+        {
+            "id": 13,
+            "id_cliente": 1113,
+            "cuentaOrigen": 3049583838,
+            "cuentaDestino": 0,
+            "fecha": "20190319",
+            "hora": "09:11",
+            "descripcion": "PANADERIA ELPAN",
+            "monto": -83.50
+        }
+    ]
+}
