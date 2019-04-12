@@ -1,0 +1,87 @@
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-repeat.html">
+<dom-module id="banktowa-inicio">
+    <template>
+            <style>
+                :host{
+                    display: block;   
+                }
+                .datagrid table { border-collapse: collapse; text-align: center; width: 100%; } 
+                .datagrid {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #36752D; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+                .datagrid table td, .datagrid table th { padding: 3px 10px; }
+                .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #36752D), color-stop(1, #275420) );background:-moz-linear-gradient( center top, #36752D 5%, #275420 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#36752D', endColorstr='#275420');background-color:#36752D; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #36752D; } 
+                .datagrid table thead th:first-child { border: none; }
+
+                .datagrid table tbody td:first-child { border-left: none; }
+                .datagrid table tbody tr:last-child td { border-bottom: none; }
+
+                .datagrid table tbody tr:nth-child(odd) { background: #DFFFDE; color: #275420; }
+                .datagrid table tbody tr:nth-child(even) { background: #C6FFC2; color: #275420; }
+            </style>                
+            <h1>Bienvenid@ [[nombreUsuario]]!!!</h1>
+            <div class="datagrid"><table>                
+                <thead><tr><th>No.</th><th>Cuenta</th><th>Saldo</th></tr></thead>
+                <tbody>
+                    <template dom-repeat is="dom-repeat" items="[[arrCuentas]]">                    
+                        <tr>
+                            <td>[[item.index]]</td><td>[[item.tipo_cuenta]] - [[item.num_cuenta]]</td><td>[[item.saldo]]</td>
+                        </tr>                    
+                    </template>
+    </tbody>
+    </table>
+    </div>
+    </template>
+    <script>
+        class BanktowaInicio extends Polymer.Element {
+            static get is() {
+                return 'banktowa-inicio';
+            }
+            static get properties() {
+                return {
+                    nombreUsuario: {
+                        type: String,
+                        notify: true
+                    },
+                    idCliente: {
+                        type: Number,
+                        notify: true,
+                        observer: "cargaCuentasById"
+                    },
+                    arrCuentas: {
+                        type: Array
+                    }
+                    
+                };
+            }
+            constructor() {
+                super();
+            }
+            async cargaCuentas() {
+                const response = await fetch(`http://localhost:3000/cuentasClientes`);
+                if (response.status === 200) {
+                    return await response.json()
+                } else {
+                    throw error('Error al cargar info del cliente');
+                }
+            }
+
+            async cargaCuentasById() {
+                let response = await this.cargaCuentas().then((data) => {
+                    this.arrCuentas = data.filter(el => {
+
+                        return el.id_cliente == this.idCliente;
+                    })
+
+                    this.arrCuentas.map((item, idx) => {
+                        item.index = idx + 1;
+                        return item;
+                    })
+
+                    return this.arrCuentas;
+                });
+                console.log(this.arrCuentas);
+            }
+
+        }
+        customElements.define(BanktowaInicio.is, BanktowaInicio);
+    </script>
+</dom-module>

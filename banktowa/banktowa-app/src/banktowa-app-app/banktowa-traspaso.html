@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="banktowa-traSpaso">
+    <template>
+        <style>
+        :host{
+            display: block;
+        }
+       </style>
+
+
+        <h2>TRASPASO</h2>
+        
+    </template>
+    
+    <script>
+        class BanktowaTraspaso extends Polymer.Element {
+            static get is(){ return 'banktowa-traspaso'; }
+            static get properties(){
+                return {
+                    employees: {
+                        type: Array
+                    }
+                };
+            }
+                                                             
+        }
+        window.customElements.define(BanktowaTraspaso.is, BanktowaTraspaso);
+    </script>
+</dom-module>

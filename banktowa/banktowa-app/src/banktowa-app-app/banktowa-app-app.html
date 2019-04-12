@@ -1,13 +1,163 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./banktowa-consulta.html">
+<link rel="import" href="./banktowa-inicio.html">
+<link rel="import" href="./banktowa-traspaso.html">
+<link rel="import" href="./banktowa-login.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="banktowa-app-app">
   <template>
     <style>
       :host {
         display: block;
+        color: black; 
       }
+
+      #contenedor {
+        margin: 40px auto;
+        width: 90%;  /* Ancho del contenedor */
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        align-content: center;
+      }
+
+      #contenedor input {
+        height: 32px;
+        visibility: hidden;
+      }
+
+      #contenedor label {
+        float: left;
+        cursor: pointer;
+        font-size: 15px;  /* Tamaño del texto de las pestañas */
+        line-height: 40px;
+        height: 40px;
+        padding: 0 20px;
+        display: block;
+        color: white;  /* Color del texto de las pestañas */
+        text-align: center;
+        border-radius: 5px 5px 0 0;
+        background: gray;  /* Fondo de las pestañas */
+        margin-right: 5px;
+      }
+
+      #contenedor input:hover + label {
+        background: #ddd;  /* Fondo de las pestañas al pasar el cursor por encima */
+        color: #666;  /* Color del texto de las pestañas al pasar el cursor por encima */
+      }
+
+      #contenedor input:checked + label {
+        background: #F28109;  /* Fondo de las pestañas al presionar */
+        color: black; /* Color de las pestañas al presionar */
+        z-index: 6;
+        line-height: 45px;
+        height: 45px;
+        position: relative;
+        top: -5px;
+        -webkit-transition: .1s;
+        -moz-transition: .1s;
+        -o-transition: .1s;
+        -ms-transition: .1s;
+      }
+
+      .content {
+        background: #F28109;  /* Fondo del contenido */
+        position: absolute;
+        width: 90%;
+        height: 500px;  /* Alto del contenido */
+        padding: 10px;
+        z-index: 5;
+        border-radius: 0 5px 5px 5px;
+      }
+
+      .content div {
+        position: absolute;
+        z-index: -100;
+        opacity: 0;
+        transition: all linear 0.1s;
+        text-align: center;
+      }
+
+    #contenedor input.tab-selector-1:checked ~ .content .content-1,
+    #contenedor input.tab-selector-2:checked ~ .content .content-2,
+    #contenedor input.tab-selector-3:checked ~ .content .content-3,
+    #contenedor input.tab-selector-4:checked ~ .content .content-4 {
+        z-index: 100;
+        opacity: 1;
+        -webkit-transition: all ease-out 0.2s 0.1s;
+        -moz-transition: all ease-out 0.2s 0.1s;
+        -o-transition: all ease-out 0.2s 0.1s;
+        -ms-transition: all ease-out 0.2s 0.1s; 
+    }
+
+    footer
+    {
+      background-color:#F21709;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 40px;
+      color: white;
+    }
+
+    header{
+      color:red;
+      font-size: 50px;
+      text-align: end;
+    }
+
     </style>
-    <h2>Hello [[prop1]]!</h2>
+
+
+
+    <header>
+        <c>BANKTOWA</c>
+    </header>
+  
+    <template dom-if is="dom-if" if="{{muestraLogin}}">
+        <banktowa-login  nombre-usuario="{{nombreUsuario}}" id-cliente="{{idCliente}}" muestra-login="{{muestraLogin}}"></banktowa-login>
+    </template>
+    
+    <template dom-if is="dom-if" if="{{!muestraLogin}}">
+
+    <div id="contenedor">
+        <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked" />
+        <label for="tab-1" class="tab-label-1">
+            INICIO
+        </label>
+        
+        <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" />
+        <label for="tab-2" class="tab-label-2">CONSULTA</label>
+        
+        <input id="tab-3" type="radio" name="radio-set" class="tab-selector-3" />
+        <label for="tab-3" class="tab-label-3">TRASPASO</label>
+        
+        <input id="tab-4" type="radio" name="radio-set" class="tab-selector-4" />
+        <label for="tab-4" class="tab-label-4" on-click="salir">SALIR</label>
+                                
+        <div class="content">
+            <div class="content-1">
+                <banktowa-inicio  nombre-usuario="{{nombreUsuario}}" id-cliente="{{idCliente}}"></banktowa-inicio>
+            </div>
+            <div class="content-2">
+                <banktowa-consulta id-cliente="{{idCliente}}"></banktowa-consulta>
+            </div>
+            <div class="content-3">
+                <banktowa-traspaso></banktowa-traspaso>
+            </div>
+            <div class="content-4">
+                Contenido4
+            </div>
+        </div>
+    </div>
+
+  </template>
+
+    <footer>
+        <p>Copyright &copy; 1990-2019 BANKTOWA, todos los derechos reservados.</p>
+    </footer>
+
+
   </template>
 
   <script>
@@ -19,12 +169,33 @@
       static get is() { return 'banktowa-app-app'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'banktowa-app-app'
-          }
+                    nombreUsuario: {
+                        type: String,
+                        notify: true
+                    },
+                    idCliente: {
+                        type: Number,
+                        notofy: true
+                    },
+                    muestraLogin: {
+                        type: Boolean,
+                        value: true,
+                        notify: true
+                    }
         };
+
       }
+      salir() {                
+                this.muestraLogin = true;
+            } 
+
+      selected(e){
+          this.id=e.model.item.id;
+          this.firstName=e.model.item.first_name;
+          this.lastName=e.model.item.last_name;
+      }
+
+      
     }
 
     window.customElements.define(BanktowaAppApp.is, BanktowaAppApp);

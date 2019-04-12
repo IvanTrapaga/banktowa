@@ -1,0 +1,147 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="banktowa-consulta">
+    <template>
+        <style>
+        :host{
+            display: block;
+        }
+        table, th, td {
+          
+          width: 1350px;
+          height: 100%;
+          
+        }
+        .boton{
+          background-color: white;
+          position: relative;
+          width: 15%;
+          height: 40px;
+        }
+        #boxContenedor {
+          border: 1px solid black;
+          overflow:auto;
+          height:250px;
+          width:1350px;
+          scroll-padding-inline: 4
+        }
+        #boxContenedor table {
+          width:1350px;
+          background-color:lightgray;
+        }
+        
+        #head tr, td{
+          height: 45px;
+          word-wrap: break-word;
+        }
+       </style>
+
+<div id="contenedor">
+  <div> <h2>Selecciona tu cuenta</h2> </div>
+        
+    <table>
+      <tr class="head">
+        <td>FECHA</td>
+        <td>DESCRIPCION</td>
+        <td>DEPOSITO</td>
+        <td>PAGO</td>
+      </tr>
+
+      <select name="arrCuentas" style="width:150px;" on-change="selecte" >
+          <template is="dom-repeat" items="[[arrCuentas]]">
+            <option id="[[item.num_cuenta]]" >[[item.tipo_cuenta]] - [[item.num_cuenta]]</option>
+          </template>
+    </table>
+      <div id="boxContenedor">
+          <table border="1">
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr> 
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            </table>
+            
+      </div>
+      <br>
+      <tr class="hola">
+          <td>SALDO A CORTE</td>
+        </tr> 
+      
+
+<br>
+
+
+        <div align="CENTER">
+          <input type="button" on-click="" value="MES ANTERIOR" class="boton"></button>
+          <input type="button" on-click="" value="MES ACTUAL" disabled="true" class="boton"></button>
+        </div>
+     
+</div>
+    </template>
+    
+    <script>
+        class BanktowaConsulta extends Polymer.Element {
+            static get is(){ return 'banktowa-consulta'; }
+            static get properties(){
+                return {
+                    idCliente: {
+                        type: Number,
+                        notify: true,
+                        observer: "cargaCuentasById"
+                    },
+                    arrCuentas: {
+                        type: Array
+                    },
+                    numeroCuenta:{
+                      type: String
+                    }
+                };
+            }
+
+
+            constructor() {
+                super();
+            }
+            async cargaCuentas() {
+                const response = await fetch(`http://localhost:3000/cuentasClientes`);
+                if (response.status === 200) {
+                    return await response.json()
+                } else {
+                    throw error('Error al cargar info del cliente');
+                }
+            }
+
+            async cargaCuentasById() {
+                let response = await this.cargaCuentas().then((data) => {
+                    this.arrCuentas = data.filter(el => {
+
+                        return el.id_cliente == this.idCliente;
+                    })
+
+                    this.arrCuentas.map((item, idx) => {
+                        item.index = idx + 1;
+                        return item;
+                    })
+
+                    return this.arrCuentas;
+                });
+                console.log(this.arrCuentas);
+            }
+            
+
+            selecte(e){
+              this.numeroCuenta=e.target.selectedIndex;
+              console.log(`hola`,this.numeroCuenta, "target ",e.target)
+            }                       
+                                                             
+        }
+        window.customElements.define(BanktowaConsulta.is, BanktowaConsulta);
+    </script>
+</dom-module>
