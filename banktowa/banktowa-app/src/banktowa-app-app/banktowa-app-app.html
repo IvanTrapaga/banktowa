@@ -1,32 +1,55 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/elements/dom-if.html">
+<link rel="import" href="./banktowa-login.html">
+<link rel="import" href="./banktowa-inicio.html">
 
 <dom-module id="banktowa-app-app">
-  <template>
+    <template>
     <style>
       :host {
-        display: block;
+        display: block;        
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
-  </template>
+    <template dom-if is="dom-if" if="{{muestraLogin}}">
+        <banktowa-login  nombre-usuario="{{nombreUsuario}}" id-cliente="{{idCliente}}" muestra-login="{{muestraLogin}}"></banktowa-login>
+    </template>
+    <template dom-if is="dom-if" if="{{!muestraLogin}}">
+        <banktowa-inicio  nombre-usuario="{{nombreUsuario}}" id-cliente="{{idCliente}}"></banktowa-inicio>
+    </template>
+    <button on-click="salir">Salir</button>
+    </template>
 
-  <script>
-    /**
-     * @customElement
-     * @polymer
-     */
-    class BanktowaAppApp extends Polymer.Element {
-      static get is() { return 'banktowa-app-app'; }
-      static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'banktowa-app-app'
-          }
-        };
-      }
-    }
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class BanktowaAppApp extends Polymer.Element {
+            static get is() {
+                return 'banktowa-app-app';
+            }
+            static get properties() {
+                return {
+                    nombreUsuario: {
+                        type: String,
+                        notify: true
+                    },
+                    idCliente: {
+                        type: Number,
+                        notofy: true
+                    },
+                    muestraLogin: {
+                        type: Boolean,
+                        value: true,
+                        notify: true
+                    }
+                };
+            }
+            salir() {
+                this.muestraLogin = true;
+            }
+        }
 
-    window.customElements.define(BanktowaAppApp.is, BanktowaAppApp);
-  </script>
+        window.customElements.define(BanktowaAppApp.is, BanktowaAppApp);
+    </script>
 </dom-module>
