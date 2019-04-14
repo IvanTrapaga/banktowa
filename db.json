@@ -108,6 +108,14 @@
             "tipo_cuenta": "Débito",
             "producto": "Alcancia",
             "saldo": 24371.04
+        },
+        {
+            "id": 9,
+            "id_cliente": 1114,
+            "num_cuenta": 3024726166,
+            "tipo_cuenta": "Crédito",
+            "producto": "PrestaTowa",
+            "saldo": 24000.00
         }
     ],
     "cuentasDestino":[
@@ -409,7 +417,7 @@
             "fecha": "20190402",
             "hora": "20:30",
             "descripcion": "RECARGA*VESTATELCEL",
-            "monto": -100
+            "monto": -100.00
         },
         {
             "id": 19,

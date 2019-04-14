@@ -1,0 +1,51 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+
+<dom-module id="banktowa-traspaso-mensaje">
+    <template>
+    <style>
+      :host {
+        display: block;        
+      }
+
+    </style>
+
+    <h1>Mensaje</h1>
+<div>
+    <h3>¿Estas seguro de realizar el traspaso a <b>"[[cuenta.alias]]"</b> por <b>$[[importe]]</b>?</h3>
+</div>
+    
+  </template>
+
+    <script>
+        class BanktowaTraspasoMensaje extends Polymer.Element {
+            static get is() {
+                return 'banktowa-traspaso-mensaje';
+            }
+            static get properties() {
+                return {
+                    module: {
+                        type: String,
+                        value: 'banktowa-traspaso-mensaje'
+                    },
+
+                    importe: {
+                        type: String
+                    },
+
+                    cuenta: {
+                        type: Object,
+                        value: {
+                            id: 0,
+                            no_cuenta: "45238080149063",
+                            alias: "cuenta destino",
+                            id_cliente: "1"
+                        }
+                    }
+
+
+                };
+            }
+        }
+        window.customElements.define(BanktowaTraspasoMensaje.is, BanktowaTraspasoMensaje);
+    </script>
+</dom-module>

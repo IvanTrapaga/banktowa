@@ -2,13 +2,17 @@
 <link rel="import" href="/bower_components/polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
 
+<link rel="import" href="/src/banktowa-app-app/banktowa-traspaso/banktowa-traspaso-importe.html">
+
+<link rel="import" href="/src/banktowa-app-app/banktowa-traspaso/banktowa-traspaso-mensaje.html">
+
 <dom-module id="banktowa-traspaso">
     <template>
-    
+<!--
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        
+    -->        
 
     <style>
       :host {
@@ -51,32 +55,25 @@
       }
     </style>
     <div>
-
-            <div id="demo" class="alert alert-success alert-dismissible">
-                    <a class="close" data-dismiss="alert" aria-label="close">×</a>
-                    <strong>Success!</strong> Indicates a successful or positive action.
-                    </div>
-
-
     <table cellspacing="0px" >
         <tbody>
             <tr>
-                <td width="20%"><span class="labels">Cuenta Destino:</span></td>
+                <td width="20%"><span class="labels">Cuenta Origen:</span></td>
                 <td width="50%">
                         <select on-change="funSelectItemChangeOrigen" size="[[sizeItems]]">
                                 <template is="dom-repeat" items=[[cuentasOrigen]]>
-                                <option value="[[item]]">[[item]]</option>
+                                <option value="[[item.num_cuenta]]">[[item.cuenta]]</option>
                                 </template>
     </select>
     </td>
     <td width="30%"></td>
     </tr>
     <tr>
-        <td><span class="labels">Cuenta Origen:</span></td>
+        <td><span class="labels">Cuenta Destino:</span></td>
         <td>
-            <select>
-                <template is="dom-repeat" items=[[cuentasOrigen]]>
-                        <option value="[[item]]">[[item]]</option>
+            <select on-change="funSelectItemChangeDestino" size="[[sizeItems]]">
+                <template is="dom-repeat" items=[[cuentasDestino]]>
+                        <option value="[[item.no_cuenta]]">[[item.cuenta]]</option>
                 </template>
                 </select>
         </td>
@@ -85,10 +82,7 @@
     <tr>
         <td><span class="labels">Importe:</span></td>
         <td>
-            <!--
-            <input type="text" maxlength="14" on-blur="checkImporte" value$="{{importe}}">
-            -->
-            <input type="number" min="1" max="99999999.99" on-blur="checkImporte" value$="{{importe}}">
+            <banktowa-traspaso-importe strimporte={{importe}}></banktowa-traspaso-importe>
         </td>
         <td></td>
     </tr>
@@ -100,10 +94,7 @@
     </div>
 
     <div>
-        <h1>Mensaje</h1>
-        <div>
-            <h3>¿Estas seguro de realizar el traspaso a <b>"[[cuentaSelect.alias]]"</b> por <b>$[[importe]]</b></h3>
-        </div>
+        <banktowa-traspaso-mensaje importe=[[importe]] cuenta=[[cuentaSelect]]></banktowa-traspaso-mensaje>
     </div>
 
     <div>
@@ -112,10 +103,29 @@
     </template>
 
     <script>
-        /**
-         * @customElement
-         * @polymer
-         */
+        class cuentaCliente {
+            constructor(json) {
+                this.id = json.id;
+                this.id_cliente = json.id_cliente;
+                this.num_cuenta = json.num_cuenta;
+                this.tipo_cuenta = json.tipo_cuenta;
+                this.producto = json.producto;
+                this.saldo = json.saldo;
+                this.cuenta = "ITEM";
+            }
+        }
+
+        class cuentaDestino {
+            constructor(json) {
+                this.id = json.id
+                this.id_cliente = json.id_cliente
+                this.no_cuenta = json.no_cuenta
+                this.alias = json.alias
+                this.cuenta = ""
+            }
+        }
+
+
         class BanktowaTraspaso extends Polymer.Element {
             static get is() {
                 return 'banktowa-traspaso';
@@ -127,16 +137,24 @@
                         value: 'banktowa-traspaso'
                     },
 
+                    server: {
+                        type: String,
+                        value: 'http://localhost:3000'
+                    },
+
+                    cliente_login: {
+                        type: String,
+                        value: "1114"
+                    },
+
                     cuentasOrigen: {
                         type: Array,
-                        value: [1, 2, 3, 4],
-                        notify: true
+                        value: []
                     },
 
                     cuentasDestino: {
                         type: Array,
-                        value: [],
-                        notify: true,
+                        value: []
                     },
                     sizeItems: {
                         type: Number,
@@ -145,7 +163,8 @@
 
                     importe: {
                         type: String,
-                        value: "1.00"
+                        value: "1.00",
+                        notify: true
                     },
                     cuentaSelect: {
                         type: Object,
@@ -172,24 +191,94 @@
             }
 
             //---------------------------------------------------------------------------------------------------------
+            constructor() {
+                super();
+
+                var recurso = `${this.server}/cuentasClientes?id_cliente=${this.cliente_login}`;
+                this.getCuentasCliente(recurso).then(data => {
+                    console.log("getCuentasCliente Src", data);
+
+                    let arr = new Array();
+                    data.forEach(el => {
+                        let cuenta = new cuentaCliente(el);
+                        cuenta.cuenta = this.generateItemCuenta(el.tipo_cuenta, el.num_cuenta);
+                        arr.push(cuenta)
+                    });
+                    this.set('cuentasOrigen', arr);
+                }).catch(error => console.log("Hubo un problema... " + error.message)).then(console.log("getCuentasCliente Src .... OK"))
+
+                recurso = `${this.server}/cuentasDestino?id_cliente=${this.cliente_login}`;
+                this.getCuentasCliente(recurso).then(data => {
+                    console.log("getCuentasCliente Dst", data);
+
+                    let arr = new Array();
+                    data.forEach(el => {
+                        let cuenta = new cuentaDestino(el);
+                        cuenta.cuenta = this.generateItemCuenta(el.alias, el.no_cuenta, " - ");
+                        arr.push(cuenta)
+                    });
+
+                    this.set('cuentasDestino', arr);
+                    this.set('cuentaSelect', this.cuentasDestino[0]);
+
+                }).catch(error => console.log("Hubo un problema... " + error.message)).then(console.log("getCuentasCliente Dst .... OK"))
+            }
+
+            //---------------------------------------------------------------------------------------------------------
             funSelectItemChangeOrigen(ev) {
 
-                console.log(ev.target);
+                let idxSelect = ev.target.selectedIndex;
+                let itemSelect = ev.target.options[idxSelect].value;
+
+                //console.info(idxSelect, itemSelect);
+            }
+
+            funSelectItemChangeDestino(ev) {
+
+                let idxSelect = ev.target.selectedIndex;
+                let itemSelect = ev.target.options[idxSelect].value;
+
+                this.set('cuentaSelect', this.cuentasDestino[idxSelect]);
+                //console.info("cuenta destino", idxSelect, itemSelect);
+            }
+
+
+            //---------------------------------------------------------------------------------------------------------
+            async getCuentasCliente(recurso) {
+
+                var myHeaders = new Headers();
+                myHeaders.append('Content-Type', 'application/json');
+                myHeaders.append("X-Custom-Header", "ProcessThisImmediately");
+
+                var myInit = {
+                    method: 'GET',
+                    headers: myHeaders,
+                    mode: 'cors',
+                    cache: 'default',
+                    credentials: 'omit'
+                };
+
+                var myRequest = new Request(recurso, myInit);
+                let response = await fetch(myRequest);
+
+                console.log(`Response [${response.ok}] : status = ${response.status}-${response.statusText}`, recurso);
+                if (response.ok && response.status === 200) {
+                    var contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json();
+                    } else {
+                        console.log("Oops, we haven't got JSON!");
+                        return response.text();
+                    }
+                } else {
+                    console.log("Error en la red :: getCuentasClientes");
+                }
             }
 
             //---------------------------------------------------------------------------------------------------------
-            checkImporte(ev) {
-
-                let importe = ev.target.value;
-                let numImp = parseFloat(importe);
-
-                console.log(`Importe --> ${numImp}, [${ev.target.value}]`);
-
-                this.set('importe', numImp);
+            generateItemCuenta(tc, nc, separador = " ") {
+                return `${tc}${separador}${nc}`;
             }
-
-            //---------------------------------------------------------------------------------------------------------
-
 
             //---------------------------------------------------------------------------------------------------------
 

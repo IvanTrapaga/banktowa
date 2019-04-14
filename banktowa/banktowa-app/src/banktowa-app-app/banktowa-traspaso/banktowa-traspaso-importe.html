@@ -8,13 +8,45 @@
             display: block;        
             margin: 0% 2% 0% 2%;
           }
+
+        .labels {
+        --label-traspaso: 20px;
+        font-size: var(--label-traspaso);
+        font-weight: bold;
+        }
+
+      input{
+          width: var(--width-select, 80%);
+          height: var(--height-select,50px);
+
+          font-size: var(--label-traspaso);
+      }
+
+      .correcto{
+          background-color: lightgreen;
+      }
+
+      .warning{
+          background-color: lightcoral;
+      }
                 
         </style>
-        
-        <input type="number" min="1" max="99999999.99" on-blur="checkImporte" value$="{{strimporte_o}}">
+        <input class$="[[check]]" type="text" maxlength="12" value$="{{strimporte::input}}"
+        on-change="checkImporteChange"
+        on-blur="checkImporte"
+        on-keydown="funInputKey">
       </template>
 
     <script>
+        const maxDecimal = 2;
+        const inputKeys = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "Backspace", "Tab", "Enter");
+        const checkOK = "correcto";
+        const checkBAD = "warning";
+        const strIMPORTE = "$0.00";
+
+        var numDecimal = true;
+        var counter = strIMPORTE.length;
+
         class BanktowaTraspasoImporte extends Polymer.Element {
             static get is() {
                 return 'banktowa-traspaso-importe';
@@ -27,14 +59,26 @@
                     },
 
                     strimporte: {
-                        type: String
+                        type: String,
+                        notify: true
                     },
 
                     strimporte_o: {
                         type: String,
-                        value: "$0.00",
+                        value: strIMPORTE,
                         notify: true
 
+                    },
+
+                    check: {
+                        type: String,
+                        value: checkOK
+                    },
+
+                    inputType: {
+                        type: Array,
+                        value: inputKeys,
+                        readOnly: true
                     }
 
                 };
@@ -49,17 +93,75 @@
                 let importe = ev.target.value;
                 let numImp = parseFloat(importe);
 
-                console.log(`Importe --> ${numImp}, [${ev.target.value}]`);
+                console.log(`Blur:Importe --> ${numImp}, [${ev.target.value}]`, this.strimporte);
 
-                this.set('strimporte', numImp);
+                this.set('strimporte', importe);
+            }
+
+            checkImporteChange(ev) {
+
+                let importe = ev.target.value;
+                let numImp = parseFloat(importe);
+
+                if (this.funRegExpImporte(importe)) {
+                    this.set('strimporte', importe);
+                    this.set("check", checkOK);
+                } else {
+                    this.set("check", checkBAD);
+                }
+
+                console.log(`Change:Importe --> ${numImp}, [${ev.target.value}]`, this.strimporte);
+
+
+            }
+
+            //---------------------------------------------------------------------------------------------------------
+            subFormatImporte(num) {
+                let strImp = `$${num}`;
+
+
+
+                return strImp;
             }
 
             //---------------------------------------------------------------------------------------------------------
 
-            //---------------------------------------------------------------------------------------------------------
+            funInputKey(ev) {
+
+                let tecla = ev.key;
+                let valid = this.inputType.findIndex(key => key === tecla);
+
+                if (valid >= 0) {
+                    if (tecla === "Backspace") {
+                        counter = counter - 1;
+                    }
+
+                    if (tecla === ".") {
+                        let pospunto = this.strimporte.indexOf(".");
+                        console.log("punto", pospunto);
+                        if (pospunto > 0) ev.preventDefault();
+                    }
+
+                    this.set("check", checkOK);
+                } else {
+
+                    //Cancela el evento cuando el usuario no pulso una tecla correcta
+                    ev.preventDefault();
+                }
+
+            }
 
             //---------------------------------------------------------------------------------------------------------
+            funRegExpImporte(str) {
+                const pattern = "^[0-9]+$|([0-9]+[.]{1}[0-9]{2}$)"
+                const flagpattern = 'g';
 
+                let re = new RegExp(pattern, flagpattern);
+                let valid = re.test(str);
+
+                console.log("validate: importe:", str, valid);
+                return valid;
+            }
 
             //---------------------------------------------------------------------------------------------------------
 
