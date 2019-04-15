@@ -12,6 +12,9 @@
         display: block;
         color: black; 
       }
+      body{
+        background-color: blue;
+      }
 
       #contenedor {
         margin: 40px auto;
@@ -68,6 +71,7 @@
         padding: 10px;
         z-index: 5;
         border-radius: 0 5px 5px 5px;
+
       }
 
       .content div {
@@ -88,7 +92,10 @@
         -moz-transition: all ease-out 0.2s 0.1s;
         -o-transition: all ease-out 0.2s 0.1s;
         -ms-transition: all ease-out 0.2s 0.1s; 
+
     }
+
+
 
     footer
     {
@@ -111,7 +118,7 @@
 
 
     <header>
-        <c>BANKTOWA</c>
+        <c>BankTowa</c>
     </header>
   
     <template dom-if is="dom-if" if="{{muestraLogin}}">
@@ -122,32 +129,43 @@
 
     <div id="contenedor">
         <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked" />
-        <label for="tab-1" class="tab-label-1">
+        <label for="tab-1" class="tab-label-1" on-click="verLogin">
             INICIO
         </label>
         
         <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" />
-        <label for="tab-2" class="tab-label-2">CONSULTA</label>
+        <label for="tab-2" class="tab-label-2" on-click="verConsulta">CONSULTA</label>
         
         <input id="tab-3" type="radio" name="radio-set" class="tab-selector-3" />
-        <label for="tab-3" class="tab-label-3">TRASPASO</label>
+        <label for="tab-3" class="tab-label-3" on-click="verTraspaso">TRASPASO</label>
         
         <input id="tab-4" type="radio" name="radio-set" class="tab-selector-4" />
         <label for="tab-4" class="tab-label-4" on-click="salir">SALIR</label>
                                 
         <div class="content">
+            <template is="dom-if" if="[[login]]">
+                <banktowa-inicio  nombre-usuario="{{nombreUsuario}}" id-cliente="{{idCliente}}"></banktowa-inicio>
+            </template>
+            <template is="dom-if" if="[[consulta]]">
+                <banktowa-consulta id-cliente="{{idCliente}}" mes-change="{{idCliente}}" btn-vs="true"></banktowa-consulta>
+            </template>
+            <template is="dom-if" if="[[traspaso]]">
+                <banktowa-traspaso cliente_login={{idCliente}}></banktowa-traspaso>
+            </template>
+            <!--
             <div class="content-1">
                 <banktowa-inicio  nombre-usuario="{{nombreUsuario}}" id-cliente="{{idCliente}}"></banktowa-inicio>
             </div>
             <div class="content-2">
-                <banktowa-consulta id-cliente="{{idCliente}}"></banktowa-consulta>
+                <banktowa-consulta id-cliente="{{idCliente}}" mes-change="{{idCliente}}" btn-vs="true"></banktowa-consulta>
             </div>
             <div class="content-3">
-                <banktowa-traspaso></banktowa-traspaso>
+                <banktowa-traspaso cliente_login={{idCliente}}></banktowa-traspaso>
             </div>
             <div class="content-4">
                 Contenido4
             </div>
+            -->
         </div>
     </div>
 
@@ -175,18 +193,31 @@
                     },
                     idCliente: {
                         type: Number,
-                        notofy: true
+                        notify: true
                     },
                     muestraLogin: {
                         type: Boolean,
                         value: true,
                         notify: true
+                    },
+                    login:{
+                      type:Boolean,
+                      value:true
+                    },
+                    consulta:{
+                      type:Boolean,
+                      value: false
+                    },
+                    traspaso:{
+                      type: Boolean,
+                      value: false
                     }
         };
 
       }
       salir() {                
                 this.muestraLogin = true;
+                location.reload();
             } 
 
       selected(e){
@@ -194,6 +225,22 @@
           this.firstName=e.model.item.first_name;
           this.lastName=e.model.item.last_name;
       }
+
+      verLogin(){
+        this.set('login',true);
+        this.set('consulta',false);
+        this.set('traspaso',false);
+      }
+verConsulta(){
+  this.set('login',false);
+        this.set('consulta',true);
+        this.set('traspaso',false);
+}
+verTraspaso(){
+  this.set('login',false);
+        this.set('consulta',false);
+        this.set('traspaso',true);
+}
 
       
     }

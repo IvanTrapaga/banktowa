@@ -12,6 +12,19 @@
           height: 100%;
           
         }
+
+        .datagrid table { border-collapse: collapse; text-align: center; width: 100%; } 
+        .datagrid {font: normal 12px/150% Arial, Helvetica, sans-serif; background: #fff; overflow: hidden; border: 1px solid #36752D; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; }
+        .datagrid table td, .datagrid table th { padding: 3px 10px; }
+        .datagrid table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #36752D), color-stop(1, #275420) );background:-moz-linear-gradient( center top, #36752D 5%, #275420 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#36752D', endColorstr='#275420');background-color:#36752D; color:#FFFFFF; font-size: 13px; font-weight: bold; border-left: 1px solid #36752D; } 
+        .datagrid table thead th:first-child { border: none; }
+
+        .datagrid table tbody td:first-child { border-left: none; }
+        .datagrid table tbody tr:last-child td { border-bottom: none; }
+
+        .datagrid table tbody tr:nth-child(odd) { background: #DFFFDE; color: #275420; }
+        .datagrid table tbody tr:nth-child(even) { background: #C6FFC2; color: #275420; }
+
         .boton{
           background-color: white;
           position: relative;
@@ -20,7 +33,7 @@
         }
         #boxContenedor {
           border: 1px solid black;
-          overflow:auto;
+          overflow:scroll;
           height:250px;
           width:1350px;
           scroll-padding-inline: 4
@@ -36,112 +49,208 @@
         }
        </style>
 
-<div id="contenedor">
-  <div> <h2>Selecciona tu cuenta</h2> </div>
-        
-    <table>
-      <tr class="head">
-        <td>FECHA</td>
-        <td>DESCRIPCION</td>
-        <td>DEPOSITO</td>
-        <td>PAGO</td>
-      </tr>
 
-      <select name="arrCuentas" style="width:150px;" on-change="selecte" >
+  <div> 
+    <h2>Selecciona tu cuenta</h2> </div>
+      <table>
+        <select name="arrCuentas" style="width:150px;" on-change="selecte" >
           <template is="dom-repeat" items="[[arrCuentas]]">
             <option id="[[item.num_cuenta]]" >[[item.tipo_cuenta]] - [[item.num_cuenta]]</option>
           </template>
-    </table>
-      <div id="boxContenedor">
-          <table border="1">
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr> 
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr class="hola"><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-            </table>
-            
-      </div>
-      <br>
-      <tr class="hola">
-          <td>SALDO A CORTE</td>
-        </tr> 
-      
+      </table>
+      <div>
+        <div class="datagrid">
+          <table>                
+            <thead>
+              <tr>
+                <th>FECHA</th>
+                <th>DESCRIPCION</th>
+                <th>MOVIMIENTOS</th>
+              </tr>
+            </thead>
+                
+            <tbody>
+              <template dom-repeat is="dom-repeat" items="[[arrMovimientos]]">                    
+                <tr>
+                  <td>[[item.fecha]]</td><td>[[item.descripcion]]</td><td>[[item.monto]]</td>
+                  
+                </tr>
+                <tr><td>1</td><td>2</td><td>3</td></tr>                    
+              </template>
+              </tbody>
+            </table> 
+         </div>
+    <br>
+    <tr class="hola">
+        <td>SALDO A CORTE</td>
+      </tr> 
+    
 
 <br>
 
 
-        <div align="CENTER">
-          <input type="button" on-click="" value="MES ANTERIOR" class="boton"></button>
-          <input type="button" on-click="" value="MES ACTUAL" disabled="true" class="boton"></button>
-        </div>
-     
-</div>
-    </template>
-    
-    <script>
-        class BanktowaConsulta extends Polymer.Element {
-            static get is(){ return 'banktowa-consulta'; }
-            static get properties(){
-                return {
-                    idCliente: {
-                        type: Number,
-                        notify: true,
-                        observer: "cargaCuentasById"
-                    },
-                    arrCuentas: {
-                        type: Array
-                    },
-                    numeroCuenta:{
-                      type: String
-                    }
-                };
-            }
+      <div align="CENTER">
+        <input type="button" on-click="mesAnterior" value="MES ANTERIOR" disabled="[[!btnVs]]" class="boton"></button>
+        <input type="button" on-click="mesActual" value="MES ACTUAL" disabled="[[btnVs]]" class="boton"></button>
+      </div>
+   
+
+  </template>
+  
+  <script>
+      class BanktowaConsulta extends Polymer.Element {
+          static get is(){ return 'banktowa-consulta'; }
+          static get properties(){
+              return {
+                  idCliente: {
+                      type: Number,
+                      notify: true,
+                      observer: "cargaCuentasById"
+                  },
+                  arrCuentas: {
+                      type: Array
+                  },
+                  numeroCuenta:{
+                    type: String
+                  },
+                  arrMovimientos:{
+                    type: Array
+                  },
+                  mesC:{
+                    type: Number,
+                    value: 0
+                  },
+                  mesChange:{
+                    type: Boolean,
+                    notify: true,
+                    observer: "cargaCuentasByCuenta"
+                  },
+                  btnVs:{
+                    type: Boolean,
+                    value: true
+                  },
+                  cuentaMostrar:{
+                    type: String
+                  }
+              };
+          }
 
 
-            constructor() {
-                super();
-            }
-            async cargaCuentas() {
-                const response = await fetch(`http://localhost:3000/cuentasClientes`);
-                if (response.status === 200) {
-                    return await response.json()
-                } else {
-                    throw error('Error al cargar info del cliente');
-                }
-            }
+          constructor() {
+              super();
+              try {
+                this.cargaCuentasByCuenta();
+                this.castMonth();
+              } catch (error) {
+                console.log(error);
+              } 
+          }
 
-            async cargaCuentasById() {
-                let response = await this.cargaCuentas().then((data) => {
-                    this.arrCuentas = data.filter(el => {
+          async cargaCuentas() {
+              const response = await fetch(`http://localhost:3000/cuentasClientes`);
+              if (response.status === 200) {
+                  return await response.json()
+              } else {
+                  throw error('Error al cargar info del cliente');
+              }
+          }
 
-                        return el.id_cliente == this.idCliente;
-                    })
+          async cargaCuentasById() {
+              let response = await this.cargaCuentas().then((data) => {
+                  this.arrCuentas = data.filter(el => {
 
-                    this.arrCuentas.map((item, idx) => {
-                        item.index = idx + 1;
-                        return item;
-                    })
+                      return el.id_cliente == this.idCliente;
+                  }) 
 
-                    return this.arrCuentas;
-                });
-                console.log(this.arrCuentas);
-            }
+                  this.arrCuentas.map((item, idx) => {
+                      item.index = idx + 1;
+                      return item;
+                  })
+                  this.cuentaMostrar=this.arrCuentas[0].num_cuenta;
+                  console.log("hoAAAAAAl"+this.cuentaMostrar);  
+                  return this.arrCuentas;
+              });
+              console.log(this.arrCuentas);
+          }
+          
+
+          async cargaCuentasM() {
+              const response = await fetch(`http://localhost:3000/movimientos`);
+              if (response.status === 200) {
+                  return await response.json()
+              } else {
+                  throw error('Error al cargar info del cliente');
+              }
+          }
+
+          async cargaCuentasByCuenta() {
+              let response = await this.cargaCuentasM().then((data) => {
+                  this.arrMovimientos = data.filter(el => {
+
+                    var f = new Date(Date.parse(el.fecha));
+                    var fecha = new Date();
+                    var mes = fecha.getMonth() + parseInt([[this.mesC]]);
+                    
+                      return el.id_cliente == this.idCliente && f.getMonth() == mes;
+                  })
+
+                  this.arrMovimientos.map((item, idx) => {
+                      item.index = idx + 1;
+                      return item;
+                  })
+
+                  return this.arrMovimientos;
+              });
+              console.log(`s`,this.arrMovimientos);
+              var f = new Date(Date.parse('2019-01-10'));
+              
+              console.log(f.getMonth()+1)
+          }
+
+          selecte(e){
+            this.numeroCuenta=e.target.selectedIndex;
+            console.log(`hola`,this.numeroCuenta, "target ",e.target)
+            this.cuentaMostrar=this.arrCuentas[this.numeroCuenta].num_cuenta;
+            console.log("aaaaa  "+this.cuentaMostrar)
+            //this.cargaCuentasByCuenta();
+          }    
+
+          castMonth(){
             
+            var fecha = new Date();
+            var mes = fecha.getMonth() + parseInt([[this.mesC]]);
+            console.log(mes); 
 
-            selecte(e){
-              this.numeroCuenta=e.target.selectedIndex;
-              console.log(`hola`,this.numeroCuenta, "target ",e.target)
-            }                       
-                                                             
-        }
-        window.customElements.define(BanktowaConsulta.is, BanktowaConsulta);
+          }         
+
+          mesAnterior(){
+            var fecha = new Date();
+            var mes = fecha.getMonth();
+            if(mes == 1){
+              this.mesC = 12;
+            }
+            else{
+              this.mesC = this.mesC - 1;
+            }
+            this.btnVs = false;
+            this.cargaCuentasByCuenta();
+          } 
+
+          mesActual(){
+            var fecha = new Date();
+            var mes = fecha.getMonth();
+            if(mes == 12){
+              this.mesC = 1;
+            }
+            else{
+              this.mesC = this.mesC+1;
+            }
+            this.btnVs = true;
+            this.cargaCuentasByCuenta();
+            
+          }         
+                                                           
+      }
+      window.customElements.define(BanktowaConsulta.is, BanktowaConsulta);
     </script>
 </dom-module>

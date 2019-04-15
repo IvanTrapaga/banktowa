@@ -72,13 +72,33 @@
                     })
 
                     this.arrCuentas.map((item, idx) => {
-                        item.index = idx + 1;
-                        return item;
-                    })
+                            item.index = idx + 1;
+					// LINEA NUEVA
+                            item.saldo = this.otorgaFormato(item);
 
+                            return item;
+                        })
+                        //this.otorgaFormato();
                     return this.arrCuentas;
                 });
-                console.log(this.arrCuentas);
+                //console.log(this.arrCuentas);                
+            }
+
+
+
+            otorgaFormato(item) {
+                let idx, decimales;
+                item.saldo = "$" + item.saldo
+                idx = item.saldo.indexOf(".");
+                if (idx === -1) {
+                    item.saldo = item.saldo + ".00";
+                } else if (idx > 0) {
+                    idx++;
+                    decimales = item.saldo.substring(idx);
+                    while (decimales.length < 2) decimales = decimales + '0';
+                    item.saldo = item.saldo.substring(0, idx) + decimales.substring(0, 2);
+                }
+                return item.saldo
             }
 
         }
