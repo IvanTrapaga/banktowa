@@ -6,6 +6,8 @@
 
 <link rel="import" href="/src/banktowa-app-app/banktowa-traspaso/banktowa-traspaso-mensaje.html">
 
+<link rel="import" href="/src/banktowa-app-app/banktowa-traspaso/banktowa-traspaso-comprobante.html">
+
 <dom-module id="banktowa-traspaso">
     <template>
 <!--
@@ -41,13 +43,14 @@
       select,input{
           width: var(--width-select, 80%);
           height: var(--height-select,50px);
-
           font-size: var(--label-traspaso);
       }
 
       button {
         width: var(--width-button, 30%);
         height: var(--height-button, 50px);
+        font-size: var(--label-traspaso);
+        margin: 0% 4% 0% 4%;
       }
 
       table{
@@ -87,19 +90,25 @@
         <td></td>
     </tr>
     <tr>
-        <td colspan="3" align="right"><button on-click="">Traspasar</button></td>
+        <td colspan="3" align="right"><button on-click="traspasar">Traspasar</button></td>
     </tr>
     </tbody>
     </table>
     </div>
 
+    <template is="dom-if" if="[[mensajes]]">
     <div>
-        <banktowa-traspaso-mensaje importe=[[importe]] cuenta=[[cuentaSelect]]></banktowa-traspaso-mensaje>
+        <banktowa-traspaso-mensaje importe=[[importe]] cuenta=[[cuentaSelect]] mensaje={{mensajes}} comprobante={{comprobante}}></banktowa-traspaso-mensaje>
     </div>
+    </template>
 
+    <template is="dom-if" if="[[comprobante]]">
     <div>
-        <h1>Comprobante</h1>
+        <banktowa-traspaso-comprobante comprobante=[[comprobante]] cuentaSelectDst=[[cuentaSelect]] 
+        cuentaSelectSrc=[[cuentaSelectSrc]] importe=[[importe]]></banktowa-traspaso-comprobante>
     </div>
+    </template>
+
     </template>
 
     <script>
@@ -173,7 +182,19 @@
                             no_cuenta: "45238080149063",
                             alias: "cuenta destino",
                             id_cliente: "1"
-                        }
+                        },
+                        notify: true
+                    },
+
+                    cuentaSelectSrc: {
+                        type: Object,
+                        value: {
+                            id: 0,
+                            no_cuenta: "45238080149063",
+                            alias: "cuenta destino",
+                            id_cliente: "1"
+                        },
+                        notify: true
                     },
 
                     mensajes: {
@@ -205,6 +226,7 @@
                         arr.push(cuenta)
                     });
                     this.set('cuentasOrigen', arr);
+                    this.set('cuentaSelectSrc', this.cuentasOrigen[0]);
                 }).catch(error => console.log("Hubo un problema... " + error.message)).then(console.log("getCuentasCliente Src .... OK"))
 
                 recurso = `${this.server}/cuentasDestino?id_cliente=${this.cliente_login}`;
@@ -230,6 +252,7 @@
                 let idxSelect = ev.target.selectedIndex;
                 let itemSelect = ev.target.options[idxSelect].value;
 
+                this.set('cuentaSelectSrc', this.cuentasOrigen[idxSelect]);
                 //console.info(idxSelect, itemSelect);
             }
 
@@ -281,7 +304,15 @@
             }
 
             //---------------------------------------------------------------------------------------------------------
-
+            traspasar() {
+                let numImp = parseFloat(this.importe);
+                console.log("traspasar", numImp);
+                if (numImp >= 1 && numImp < 100000000) {
+                    this.set('mensajes', true);
+                } else {
+                    document.querySelector('banktowa-traspaso-importe').focus();
+                }
+            }
 
             //---------------------------------------------------------------------------------------------------------
 

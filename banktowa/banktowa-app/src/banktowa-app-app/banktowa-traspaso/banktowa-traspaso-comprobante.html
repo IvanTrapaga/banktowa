@@ -1,0 +1,131 @@
+<link rel="import" href="/bower_components/polymer/polymer-element.html">
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
+
+<dom-module id="banktowa-traspaso-comprobante">
+    <template>
+    <style>
+      :host {
+        display: block;        
+        
+        --label-traspaso: 20px;
+      }
+
+      :host{
+        width: 92%;
+        height: auto;
+        margin: 0% 4% 0% 4%;
+      }
+
+      .msjok{
+          border-color: black;
+          border-style: solid;
+          border-width: 2px;
+          background-color: lightgreen;
+      }
+
+      h2{
+          color: green;
+      }
+    </style>
+
+    <div>
+        <h2>Transferencia realizada con éxito !!!</h2>
+        <h3>Comprobante:</h3>
+    </div>
+    <div class="msjok">
+        <table cellspacing="0px" width="100%">
+            <tr>
+                <td width="40%"><h3>Cuenta Origen:</h3></td>
+                <td>[[cuentaSelectSrc.cuenta]]</td>
+            </tr>
+            <tr>
+                    <td><h3>Cuenta Destino:</h3></td>
+                    <td>[[cuentaSelect.cuenta]]</td>
+            </tr>
+            <tr>
+                    <td><h3>Importe:</h3></td>
+                    <td><b>$ [[importe]]</b></td>
+            </tr>
+            <tr>
+                    <td><h3>Fecha y hora:</h3></td>
+                    <td><b>[[fecha]]</b></td>
+            </tr>
+        </table>
+    </div>
+
+    </template>
+
+    <script>
+        class BanktowaTraspasoComprobante extends Polymer.Element {
+            static get is() {
+                return 'banktowa-traspaso-comprobante';
+            }
+            static get properties() {
+                return {
+                    module: {
+                        type: String,
+                        value: 'banktowa-traspaso-comprobante'
+                    },
+
+                    comprobante: {
+                        type: Boolean,
+                        value: false
+                    },
+                    cuentaSelectDst: {
+                        type: Object,
+                        value: {
+                            id: 0,
+                            no_cuenta: "45238080149063",
+                            alias: "cuenta destino",
+                            id_cliente: "1"
+                        }
+                    },
+
+                    cuentaSelectSrc: {
+                        type: Object,
+                        value: {
+                            id: 0,
+                            no_cuenta: "45238080149063",
+                            alias: "cuenta destino",
+                            id_cliente: "1"
+                        }
+                    },
+
+                    importe: {
+                        type: String
+                    },
+
+                    fecha: {
+                        type: Object,
+                        value: function() {
+                            let fecha = new Date();
+                            return fecha;
+                        }
+                    }
+                }
+            }
+
+            constructor() {
+                super();
+
+                console.log(this.cuentaSelectSrc, this.cuentaSelectDst);
+            }
+
+            //---------------------------------------------------------------------------------------------------------
+
+            //---------------------------------------------------------------------------------------------------------
+
+
+            //---------------------------------------------------------------------------------------------------------
+
+            //---------------------------------------------------------------------------------------------------------
+
+
+            //---------------------------------------------------------------------------------------------------------
+
+            //---------------------------------------------------------------------------------------------------------
+        }
+        window.customElements.define(BanktowaTraspasoComprobante.is, BanktowaTraspasoComprobante);
+    </script>
+</dom-module>

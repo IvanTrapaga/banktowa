@@ -1,5 +1,6 @@
 <link rel="import" href="/bower_components/polymer/polymer-element.html">
-
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="/bower_components/polymer/lib/elements/dom-if.html">
 
 <dom-module id="banktowa-traspaso-importe">
     <template>
@@ -62,14 +63,6 @@
                         type: String,
                         notify: true
                     },
-
-                    strimporte_o: {
-                        type: String,
-                        value: strIMPORTE,
-                        notify: true
-
-                    },
-
                     check: {
                         type: String,
                         value: checkOK
@@ -105,23 +98,20 @@
 
                 if (this.funRegExpImporte(importe)) {
                     this.set('strimporte', importe);
-                    this.set("check", checkOK);
+                    if (numImp >= 1) {
+                        this.set("check", checkOK);
+                    } else {
+                        this.set("check", checkBAD);
+                        ev.preventDefault();
+                    }
                 } else {
                     this.set("check", checkBAD);
+                    ev.preventDefault();
                 }
 
                 console.log(`Change:Importe --> ${numImp}, [${ev.target.value}]`, this.strimporte);
 
 
-            }
-
-            //---------------------------------------------------------------------------------------------------------
-            subFormatImporte(num) {
-                let strImp = `$${num}`;
-
-
-
-                return strImp;
             }
 
             //---------------------------------------------------------------------------------------------------------
